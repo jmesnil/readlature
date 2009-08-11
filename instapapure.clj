@@ -15,18 +15,31 @@
     (html 
       [:strong "Pong"])))
   
-(defn post [location title]
-  (layout (str "Posted " title) 
-    (html 
-      [:a {:href location} title])))  
+(defn new-post [location title]
+  ;; save the page to read it later
+  (redirect-to location))
 
+(defn create-post []
+  (layout
+    "Save a page"
+    (form-to [:post "/post"]
+      [:label "Location:"]
+      [:input {:type "text" :name "l"}]
+      [:br]
+      [:label "Title:"]
+      [:input {:type "text" :name "t"}]
+      [:br]
+      (submit-button "save"))))
+  
 (defroutes instapapure-app
    (GET "/public/*"
      (or (serve-file (params :*)) :next))
    (GET "/ping" 
      (ping))
+   (GET "/post" 
+       (create-post))
    (POST "/post" 
-       (post (:l params) (:t params)))
+       (new-post (:l params) (:t params)))
    (ANY "*" 
      (page-not-found)))
 
