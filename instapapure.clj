@@ -8,7 +8,7 @@
 (def db 
   {:classname "org.hsqldb.jdbcDriver"
    :subprotocol "hsqldb"
-   :subname "file:instapapure-db"})
+   :subname "file:db/instapapure"})
 
 (defn now [] (java.sql.Timestamp. (.getTime (java.util.Date.))))
 
