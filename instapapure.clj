@@ -74,11 +74,12 @@
 (defn show-posts []
   (layout "All Posts"
     (html
-      [:ul
-        (map display-post (select-posts))]
-      [:a {:href "/post"} "New Post"]
-      [:p "Drag the bookmarklet: "
-        [:a {:href bookmarklet} "Read later"]])))
+      [:p
+        [:a {:href "/post"} "New Post"]]
+      [:p
+        "Drag the bookmarklet: "
+        [:a {:href bookmarklet} "Read later"]]
+      (map display-post (select-posts)))))
 
 (defn new-post [location title summary]
   (insert-post location title summary)
