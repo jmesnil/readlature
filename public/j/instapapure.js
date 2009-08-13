@@ -1,0 +1,16 @@
+jQuery(document).ready(function() {
+
+$("a.delete").click(function() {
+  title = $(this).prev("a").text();
+  if (confirm('Are you sure you want to delete "' + title + '"?'))
+  {
+    id = $(this).prev("a").attr("id");
+    parent = $(this).parents("div.post")
+    $.post("/delete-post", {id: id},
+      function(data) {
+        parent.slideToggle("slow");
+      });
+  }
+});
+
+});

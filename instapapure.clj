@@ -33,6 +33,10 @@
         [:location :title :summary :created_at]
         [location  title  summary  (now)]))))
 
+(defn remove-post [id]
+  (with-connection db
+    (delete-rows :posts ["id=?" id])))
+
 (defn select-posts []
   (with-connection db
     (with-query-results res ["select * from posts"] (doall res))))
@@ -49,18 +53,23 @@
   (html
     [:head
       [:title title]
-      (include-js "public/j/jquery.js")
+      (include-js "public/j/jquery.js"
+                  "public/j/instapapure.js")
       (include-css "public/s/instapapure.css")]
     [:body
       [:h1 title]
       body]))
 
+(defn delete-post [id]
+  (remove-post id))
+
 (defn display-post [post]
-  [:li
-    [:span "(" (:id post) ") "]
-    [:a {:href (:location post)} (:title post)]
+  [:div.post
+    [:div
+      [:a.title {:href (:location post) :id (:id post)} (:title post)]
+      [:a.delete "&#10006;"]
     [:div (:summary post)]
-    [:div " created at " (:created_at post)]])
+    [:div.created_at " created at " (:created_at post)]]])
 
 (defn show-posts []
   (layout "All Posts"
@@ -101,6 +110,8 @@
     (create-post))
   (POST "/post"
     (new-post (:l params) (:t params) (:s params)))
+  (POST "/delete-post"
+    (delete-post (:id params)))
   (ANY "*"
     (page-not-found)))
 
