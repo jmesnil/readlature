@@ -1,6 +1,24 @@
 body {
-  background-color: #ccc; 
   font-family: Verdana, Helvetica;
-  color: #555;
-  font-size: 12px;
+}
+
+.post {
+}
+
+a.delete {
+  font-size: 1.5em;
+  color: red;
+}
+
+a.title {
+}
+
+.summary {
+  margin: 20px;
+}
+
+.created_at {
+  color: #888;
+  font-size: 0.75em;
+  text-align: right;
 }
