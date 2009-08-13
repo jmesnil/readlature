@@ -102,13 +102,13 @@
     starred    :starred
     created_at :created_at}]
 
-  [:div.post
+  [:div.post {:id id}
     [:div
       (if starred
           [:a {:class "star starred"   :title "Star it"  } "&#9733;"]
           [:a {:class "star unstarred" :title "Unstar it"} "&#9734;"])
       "&nbsp;"
-      [:a.title {:href location :id id} title]
+      [:a.title {:href location} title]
       "&nbsp;"
       [:a.delete { :title "Permanently Delete"} "&#10006;"]
     [:div summary]
