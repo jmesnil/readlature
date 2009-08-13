@@ -5,6 +5,11 @@ body {
 .post {
 }
 
+a.star {
+  font-size: 1.5em;
+  color: #fc3;
+}
+
 a.delete {
   font-size: 1.5em;
   color: red;
