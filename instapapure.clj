@@ -63,14 +63,16 @@
 (defn delete-post [id]
   (remove-post id))
 
-(defn display-post [post]
+(defn display-post
+  [{id :id location :location title :title summary :summary created_at :created_at}]
+
   [:div.post
     [:div
-      [:a.title {:href (:location post) :id (:id post)} (:title post)]
+      [:a.title {:href location :id id} title]
       "&nbsp;"
       [:a.delete { :title "Permanently Delete"} "&#10006;"]
-    [:div (:summary post)]
-    [:div.created_at " created at " (:created_at post)]]])
+    [:div summary]
+    [:div.created_at " created at " created_at]]])
 
 (defn show-posts []
   (layout "All Posts"
