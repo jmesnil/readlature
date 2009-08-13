@@ -112,7 +112,7 @@
     (create-post))
   (POST "/post"
     (new-post (:l params) (:t params) (:s params)))
-  (POST "/delete-post"
+  (POST "/post/delete"
     (delete-post (:id params)))
   (ANY "*"
     (page-not-found)))

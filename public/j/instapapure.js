@@ -10,7 +10,7 @@ $("a.delete").click(function() {
   {
     id = $(this).prev("a").attr("id");
     parent = $(this).parents("div.post")
-    $.post("/delete-post", {id: id},
+    $.post("/post/delete", {id: id},
       function(data) {
         parent.slideToggle("slow");
       });
