@@ -1,14 +1,19 @@
 (use 'compojure)
 (use 'clojure.contrib.sql)
 
+;; ************* ;;
+;; Configuration ;;
+;; ************* ;;
+
+(def author {:name "Jeff Mesnil" :address "http://jmesnil.net/"})
+(def db
+  {:classname   "org.hsqldb.jdbcDriver"
+   :subprotocol "hsqldb"
+   :subname     "file:db/instapapure"})
+
 ;; ************** ;;
 ;; Database Layer ;;
 ;; ************** ;;
-
-(def db
-  {:classname "org.hsqldb.jdbcDriver"
-   :subprotocol "hsqldb"
-   :subname "file:db/instapapure"})
 
 (defn now [] (java.sql.Timestamp. (.getTime (java.util.Date.))))
 
@@ -20,12 +25,6 @@
     [:summary    :varchar "NOT NULL"]
     [:starred    :boolean]
     [:created_at :datetime]))
-
-;; we put the table creation in a try.
-;; All calls after the 1st one will fail because the table is already there
-(try
-  (with-connection db (create-instapapure-tables))
-  (catch Exception _))
 
 (defn insert-post [location title summary]
   (with-connection db
@@ -75,7 +74,7 @@
   (html
     [:div.footer
       "&copy; 2009 - "
-      [:a {:href "http://jmesnil.net/"} "Jeff Mesnil"]]))
+      [:a {:href (:address author)} (:name author)]]))
 
 (defn layout [title & body]
   (html
@@ -160,6 +159,16 @@
     (star-post (:id params) (:s params)))
   (ANY "*"
     (page-not-found)))
+
+;; ********************************;;
+;; Start the DB and the Web server ;;
+;; ********************************;;
+
+;; we put the table creation in a try.
+;; All calls after the 1st one will fail because the table is already there
+(try
+  (with-connection db (create-instapapure-tables))
+  (catch Exception _))
 
 (run-server {:port 8080}
   "/*" (servlet instapapure-app))
