@@ -10,6 +10,11 @@ a.delete {
   color: red;
 }
 
+.cursored
+{
+  cursor: pointer;
+}
+
 a.title {
 }
 

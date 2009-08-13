@@ -1,5 +1,9 @@
 jQuery(document).ready(function() {
 
+$("a.delete").mouseover(function() {
+  $(this).addClass("cursored");
+});
+
 $("a.delete").click(function() {
   title = $(this).prev("a").text();
   if (confirm('Are you sure you want to delete "' + title + '"?'))

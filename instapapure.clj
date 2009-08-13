@@ -67,7 +67,8 @@
   [:div.post
     [:div
       [:a.title {:href (:location post) :id (:id post)} (:title post)]
-      [:a.delete "&#10006;"]
+      "&nbsp;"
+      [:a.delete { :title "Permanently Delete"} "&#10006;"]
     [:div (:summary post)]
     [:div.created_at " created at " (:created_at post)]]])
 
