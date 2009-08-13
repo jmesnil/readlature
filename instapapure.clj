@@ -71,6 +71,12 @@
       "Drag the bookmarklet: "
       [:a {:href bookmarklet} "Read later"]]))
 
+(defn footer []
+  (html
+    [:div.footer
+      "&copy; 2009 - "
+      [:a {:href "http://jmesnil.net/"} "Jeff Mesnil"]]))
+
 (defn layout [title & body]
   (html
     [:head
@@ -80,7 +86,8 @@
       (include-css "public/s/instapapure.css")]
     [:body
       (header title)
-      body]))
+      body
+      (footer)]))
 
 (defn delete-post [id]
   (remove-post id))
