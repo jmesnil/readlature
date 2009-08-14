@@ -52,15 +52,9 @@
 (defn delete-post [id]
   (store/remove-post id))
 
-(defn translate [params mapping]
-  (select-keys
-    (first
-       (rename #{params} mapping))
-    (vals mapping)))
-
 (defn update-post [id params]
   (store/update-post id
-    (translate params
+    (rename-keys params
       {:t  :title
        :l  :location
        :st :starred
