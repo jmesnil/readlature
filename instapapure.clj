@@ -1,54 +1,13 @@
-(use 'compojure)
-(use 'clojure.contrib.sql)
+(ns instapaper
+  (:use compojure)
+  (:require [db.posts :as store]))
 
 ;; ************* ;;
 ;; Configuration ;;
 ;; ************* ;;
 
 (def author {:name "Jeff Mesnil" :address "http://jmesnil.net/"})
-(def db
-  {:classname   "org.hsqldb.jdbcDriver"
-   :subprotocol "hsqldb"
-   :subname     "file:db/instapapure"})
 (def server-port 8080)
-
-;; ************** ;;
-;; Database Layer ;;
-;; ************** ;;
-
-(defn now [] (java.sql.Timestamp. (.getTime (java.util.Date.))))
-
-(defn create-instapapure-tables []
-  (create-table :posts
-    [:id         :int "IDENTITY" "PRIMARY KEY"]
-    [:location   :varchar "NOT NULL"]
-    [:title      :varchar "NOT NULL"]
-    [:summary    :varchar "NOT NULL"]
-    [:starred    :boolean]
-    [:created_at :datetime]))
-
-(defn insert-post [location title summary]
-  (with-connection db
-    (transaction
-      (insert-values :posts
-        [:location :title :summary :starred :created_at]
-        [location  title  summary  nil      (now)]))))
-
-(defn remove-post [id]
-  (with-connection db
-    (delete-rows :posts ["id=?" id])))
-
-(defn update-star [id starred]
-  (with-connection db
-      (update-values :posts ["id=?" id] {:starred starred})))
-
-(defn select-posts
-  ([]
-    (with-connection db
-      (with-query-results res ["select * from posts"] (doall res))))
-  ([criteria]
-    (with-connection db
-      (with-query-results res [(str "select * from posts where " criteria)] (doall res)))))
 
 ;; ********* ;;
 ;; Web Layer ;;
@@ -90,10 +49,10 @@
       (footer)]))
 
 (defn delete-post [id]
-  (remove-post id))
+  (store/remove-post id))
 
 (defn star-post [id starred]
-  (update-star id starred))
+  (store/update-star id starred))
 
 (defn display-post
   [{id         :id
@@ -117,14 +76,14 @@
 
 (defn show-posts []
   (layout "All Posts"
-    (map display-post (select-posts))))
+    (map display-post (store/select-posts))))
 
 (defn show-starred-posts []
   (layout "Starred Posts"
-    (map display-post (select-posts "starred = true"))))
+    (map display-post (store/select-posts "starred = true"))))
 
 (defn new-post [location title summary]
-  (insert-post location title summary)
+  (store/insert-post location title summary)
   (redirect-to location))
 
 (defn create-post []
@@ -165,11 +124,7 @@
 ;; Start the DB and the Web server ;;
 ;; ********************************;;
 
-;; we put the table creation in a try.
-;; All calls after the 1st one will fail because the table is already there
-(try
-  (with-connection db (create-instapapure-tables))
-  (catch Exception _))
+(store/init)
 
 (run-server {:port server-port}
   "/*" (servlet instapapure-app))

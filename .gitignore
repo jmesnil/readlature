@@ -1,5 +1,5 @@
 # temp directory used by HSQLDB
-db
+hsqldb
 
 # xcode noise
 build
