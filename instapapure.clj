@@ -10,6 +10,7 @@
   {:classname   "org.hsqldb.jdbcDriver"
    :subprotocol "hsqldb"
    :subname     "file:db/instapapure"})
+(def server-port 8080)
 
 ;; ************** ;;
 ;; Database Layer ;;
@@ -170,5 +171,7 @@
   (with-connection db (create-instapapure-tables))
   (catch Exception _))
 
-(run-server {:port 8080}
+(run-server {:port server-port}
   "/*" (servlet instapapure-app))
+
+(println (str "Instapapure server started at http://0.0.0.0:" server-port))
