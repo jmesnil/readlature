@@ -28,9 +28,12 @@
   (with-connection db
     (delete-rows :posts ["id=?" id])))
 
-(defn update-star [id starred]
+(defn remove-nil-values [params]
+  (select-keys params (filter #(not (nil? (params %))) (keys params))))
+
+(defn update-post [id params]
   (with-connection db
-      (update-values :posts ["id=?" id] {:starred starred})))
+      (update-values :posts ["id=?" id] (remove-nil-values params))))
 
 (defn select-posts
   ([]
@@ -39,6 +42,11 @@
   ([criteria]
     (with-connection db
       (with-query-results res [(str "select * from posts where " criteria)] (doall res)))))
+
+(defn select-post [id]
+  (with-connection db
+      (with-query-results res [(str "select * from posts where id=" id)] (first (doall res)))))
+
 
 
 (defn init [] 

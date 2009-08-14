@@ -1,5 +1,6 @@
 (ns instapaper
-  (:use compojure)
+  (:use clojure.set
+        compojure)
   (:require [db.posts :as store]))
 
 ;; ************* ;;
@@ -51,8 +52,19 @@
 (defn delete-post [id]
   (store/remove-post id))
 
-(defn star-post [id starred]
-  (store/update-star id starred))
+(defn translate [params mapping]
+  (select-keys
+    (first
+       (rename #{params} mapping))
+    (vals mapping)))
+
+(defn update-post [id params]
+  (store/update-post id
+    (translate params
+      {:t  :title
+       :l  :location
+       :st :starred
+       :s  :summary})))
 
 (defn display-post
   [{id         :id
@@ -100,6 +112,22 @@
       [:br]
       (submit-button "save"))))
 
+(defn edit-post [id]
+  (let [post (store/select-post id)]
+    (layout "Edit Post"
+      (form-to [:post (str "/post/" id)]
+        [:input {:type "hidden" :name "id" :value (:id post)}]
+        [:label "Location:"]
+        [:input {:type "text" :name "l" :value (:location post)}]
+        [:br]
+        [:label "Title:"]
+        [:input {:type "text" :name "t" :value (:title post)}]
+        [:br]
+        [:label "Summary:"]
+        (text-area "s" (:summary post))
+        [:br]
+        (submit-button "save")))))
+
 (defroutes instapapure-app
   (GET "/public/*"
     (or (serve-file (params :*)) :next))
@@ -115,8 +143,10 @@
     (new-post (:l params) (:t params) (:s params)))
   (POST "/post/delete"
     (delete-post (:id params)))
-  (POST "/post/star"
-    (star-post (:id params) (:s params)))
+  (GET "/post/:id"
+    (edit-post (:id params)))
+  (POST "/post/:id"
+    (update-post (:id params) params))
   (ANY "*"
     (page-not-found)))
 

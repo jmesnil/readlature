@@ -15,7 +15,7 @@ $("a.star").click(function() {
   star = $(this);
   starred = toggleStar(star);
   id = star.parents(".post").attr("id");
-  $.post("/post/star", {id: id, s: starred},
+  $.post("/post/" + id, {id: id, st: starred},
     function(data) {
       star.toggleClass("starred");
     });
