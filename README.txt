@@ -5,16 +5,16 @@ start the server:
 
 == Client ==
 
-* show all posts
+* show all articles
 
 open http://localhost:8080/
 
-* show starred posts
+* show starred articles
 
 open http://localhost:8080/s
 
-* post a new page:
+* create a new article:
 
-open http://localhost:8080/post
-curl -d l=http://example.com -d t="Title of the page" http://localhost:8080/post
+open http://localhost:8080/article
+curl -d l=http://example.com -d t="Title of the page" -d s="summary" http://localhost:8080/article
 

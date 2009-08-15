@@ -14,8 +14,8 @@ toggleStar = function(star) {
 $("a.star").click(function() {
   star = $(this);
   starred = toggleStar(star);
-  id = star.parents(".post").attr("id");
-  $.post("/post/" + id, {id: id, st: starred},
+  id = star.parents(".article").attr("id");
+  $.post("/article/" + id, {id: id, st: starred},
     function(data) {
       star.toggleClass("starred");
     });
@@ -25,11 +25,11 @@ $("a.delete").click(function() {
   title = $(this).prev("a").text();
   if (confirm('Are you sure you want to delete "' + title + '"?'))
   {
-    post = $(this).parents(".post");
-    id = post.attr("id");
-    $.post("/post/delete", {id: id},
+    article = $(this).parents(".article");
+    id = article.attr("id");
+    $.post("/article/delete", {id: id},
       function(data) {
-        post.slideToggle("slow");
+        article.slideToggle("slow");
       });
   }
 });

@@ -1,7 +1,7 @@
 (ns instapaper
   (:use clojure.set
         compojure)
-  (:require [db.posts :as store]))
+  (:require [db.articles :as store]))
 
 ;; ************* ;;
 ;; Configuration ;;
@@ -15,18 +15,18 @@
 ;; ********* ;;
 
 (def bookmarklet 
-  "javascript:var%20d=document,uri%20=%20%27http://localhost:8080/post%27;f%20=%20d.createElement(%27form%27);f.method%20=%20%27post%27;f.action%20=%20uri;t%20=d.createElement(%27input%27);t.type%20=%20%27hidden%27;t.name%20=%20%27t%27;t.value%20=d.title;l%20=%20d.createElement(%27input%27);l.type%20=%20%27hidden%27;l.name%20=%20%27l%27;l.value%20=%20d.location.href;s%20=%20d.createElement(%27input%27);s.type%20=%20%27hidden%27;s.name%20=%20%27s%27;s.value%20=%20getSelection%20();f.appendChild(t);f.appendChild(l);f.appendChild(s);b%20=%20d.createElement(%27body%27);b.appendChild(f);h%20=d.getElementsByTagName(%27html%27)[0];h.appendChild(b);f.submit();void(0)"
+  "javascript:var%20d=document,uri%20=%20%27http://localhost:8080/article%27;f%20=%20d.createElement(%27form%27);f.method%20=%20%27post%27;f.action%20=%20uri;t%20=d.createElement(%27input%27);t.type%20=%20%27hidden%27;t.name%20=%20%27t%27;t.value%20=d.title;l%20=%20d.createElement(%27input%27);l.type%20=%20%27hidden%27;l.name%20=%20%27l%27;l.value%20=%20d.location.href;s%20=%20d.createElement(%27input%27);s.type%20=%20%27hidden%27;s.name%20=%20%27s%27;s.value%20=%20getSelection%20();f.appendChild(t);f.appendChild(l);f.appendChild(s);b%20=%20d.createElement(%27body%27);b.appendChild(f);h%20=d.getElementsByTagName(%27html%27)[0];h.appendChild(b);f.submit();void(0)"
 )
 
 (defn header [title]
   (html
     [:h1 title]
     [:p
-      [:a {:href "/"}  "All Posts"]
+      [:a {:href "/"}  "All Articles"]
       "&nbsp;"
-      [:a {:href "/s"} "Starred Posts"]]
+      [:a {:href "/s"} "Starred Articles"]]
     [:p
-      [:a {:href "/post"} "New Post"]
+      [:a {:href "/article"} "New Article"]
       [:br]
       "Drag the bookmarklet: "
       [:a {:href bookmarklet} "Read later"]]))
@@ -49,18 +49,18 @@
       body
       (footer)]))
 
-(defn delete-post [id]
-  (store/remove-post id))
+(defn delete-article [id]
+  (store/remove-article id))
 
-(defn update-post [id params]
-  (store/update-post id
+(defn update-article [id params]
+  (store/update-article id
     (rename-keys params
       {:t  :title
        :l  :location
        :st :starred
        :s  :summary})))
 
-(defn display-post
+(defn display-article
   [{id         :id
     location   :location
     title      :title
@@ -68,7 +68,7 @@
     starred    :starred
     created_at :created_at}]
 
-  [:div.post {:id id}
+  [:div.article {:id id}
     [:div
       (if starred
           [:a {:class "star starred"   :title "Star it"  } "&#9733;"]
@@ -80,21 +80,21 @@
     [:div summary]
     [:div.created_at " created at " created_at]]])
 
-(defn show-posts []
-  (layout "All Posts"
-    (map display-post (store/select-posts))))
+(defn show-articles []
+  (layout "All Articles"
+    (map display-article (store/select-articles))))
 
-(defn show-starred-posts []
-  (layout "Starred Posts"
-    (map display-post (store/select-posts "starred = true"))))
+(defn show-starred-articles []
+  (layout "Starred Articles"
+    (map display-article (store/select-articles "starred = true"))))
 
-(defn new-post [location title summary]
-  (store/insert-post location title summary)
+(defn new-article [location title summary]
+  (store/insert-article location title summary)
   (redirect-to location))
 
-(defn create-post []
-  (layout "New Post"
-    (form-to [:post "/post"]
+(defn create-article []
+  (layout "New Article"
+    (form-to [:post "/article"]
       [:label "Location:"]
       [:input {:type "text" :name "l"}]
       [:br]
@@ -106,19 +106,19 @@
       [:br]
       (submit-button "save"))))
 
-(defn edit-post [id]
-  (let [post (store/select-post id)]
+(defn edit-article [id]
+  (let [article (store/select-article id)]
     (layout "Edit Post"
-      (form-to [:post (str "/post/" id)]
-        [:input {:type "hidden" :name "id" :value (:id post)}]
+      (form-to [:post (str "/article/" id)]
+        [:input {:type "hidden" :name "id" :value (:id article)}]
         [:label "Location:"]
-        [:input {:type "text" :name "l" :value (:location post)}]
+        [:input {:type "text" :name "l" :value (:location article)}]
         [:br]
         [:label "Title:"]
-        [:input {:type "text" :name "t" :value (:title post)}]
+        [:input {:type "text" :name "t" :value (:title article)}]
         [:br]
         [:label "Summary:"]
-        (text-area "s" (:summary post))
+        (text-area "s" (:summary article))
         [:br]
         (submit-button "save")))))
 
@@ -126,21 +126,21 @@
   (GET "/public/*"
     (or (serve-file (params :*)) :next))
   (GET "/"
-    (show-posts))
+    (show-articles))
   (GET "/s"
-    (show-starred-posts))
-  (GET "/posts"
-    (show-posts))
-  (GET "/post"
-    (create-post))
-  (POST "/post"
-    (new-post (:l params) (:t params) (:s params)))
-  (POST "/post/delete"
-    (delete-post (:id params)))
-  (GET "/post/:id"
-    (edit-post (:id params)))
-  (POST "/post/:id"
-    (update-post (:id params) params))
+    (show-starred-articles))
+  (GET "/articles"
+    (show-articles))
+  (GET "/article"
+    (create-article))
+  (POST "/article"
+    (new-article (:l params) (:t params) (:s params)))
+  (POST "/article/delete"
+    (delete-article (:id params)))
+  (GET "/aticle/:id"
+    (edit-article (:id params)))
+  (POST "/article/:id"
+    (update-article (:id params) params))
   (ANY "*"
     (page-not-found)))
 

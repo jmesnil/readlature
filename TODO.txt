@@ -1,12 +1,9 @@
 Stars
 =====
 
-* when unstarring a starred post from the "Starred Posts" page,
+* when unstarring a starred article from the "Starred Articles" page,
   remove it from the page with jQuery
   
-Edit Post
+Edit Article
 =========
-* added code to update post in a db
-  factorize it with update-star-post
-* added page to edit post
 * modify all and starred pages to update inline
