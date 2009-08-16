@@ -15,7 +15,7 @@ $("a.star").click(function() {
   star = $(this);
   starred = toggleStar(star);
   id = star.parents(".article").attr("id");
-  $.post("/article/" + id, {id: id, st: starred},
+  $.post("/api/article/" + id, {id: id, st: starred},
     function(data) {
       star.toggleClass("starred");
     });
@@ -27,7 +27,7 @@ $("a.delete").click(function() {
   {
     article = $(this).parents(".article");
     id = article.attr("id");
-    $.post("/article/delete", {id: id},
+    $.post("/api/article/delete", {id: id},
       function(data) {
         article.slideToggle("slow");
       });
