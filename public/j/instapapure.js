@@ -21,6 +21,17 @@ $("a.star").click(function() {
     });
 });
 
+/* update the unread status before going to the article */
+$("a.unread").click(function(e) {
+  e.preventDefault();
+  href = $(this).attr("href");
+  id = $(this).parents(".article").attr("id");
+  $.post("/api/article/" + id, {id: id, unread: false},
+    function(data) {
+      top.location.href = href;
+    });
+});
+
 $("a.delete").click(function() {
   title = $(this).prev("a").text();
   if (confirm('Are you sure you want to delete "' + title + '"?'))

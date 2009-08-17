@@ -14,6 +14,7 @@
     [:location   :varchar "NOT NULL"]
     [:title      :varchar "NOT NULL"]
     [:summary    :varchar "NOT NULL"]
+    [:unread     :boolean]
     [:starred    :boolean]
     [:created_at :datetime]))
 
@@ -21,8 +22,8 @@
   (with-connection db
     (transaction
       (insert-values :articles
-        [:location :title :summary :starred :created_at]
-        [location  title  summary  nil      (now)]))))
+        [:location :title :summary :starred :unread :created_at]
+        [ location  title  summary  false      true    (now)]))))
 
 (defn remove-article [id]
   (with-connection db

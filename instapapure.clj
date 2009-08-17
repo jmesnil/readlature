@@ -22,9 +22,11 @@
   (html
     [:h1 title]
     [:p
-      [:a {:href "/"}  "All Articles"]
-      "&nbsp;"
-      [:a {:href "/s"} "Starred Articles"]]
+      [:a {:href "/unread"}  "Unread"]
+      "&nbsp;&#9826;&nbsp;"
+      [:a {:href "/starred"}  "Starred"]
+      "&nbsp;&#9826;&nbsp;"
+      [:a {:href "/archive"} "Archive"]]
     [:p
       [:a {:href "/article"} "New Article"]
       [:br]
@@ -66,6 +68,7 @@
     title      :title
     summary    :summary
     starred    :starred
+    unread     :unread
     created_at :created_at}]
 
   [:div.article {:id id}
@@ -74,15 +77,19 @@
           [:a {:class "star starred"   :title "Star it"  } "&#9733;"]
           [:a {:class "star unstarred" :title "Unstar it"} "&#9734;"])
       "&nbsp;"
-      [:a.title {:href location} title]
+      [:a {:class (str "title " (if unread "unread" "read")) :href location} title]
       "&nbsp;"
       [:a.delete { :title "Permanently Delete"} "&#10006;"]
     [:div summary]
     [:div.created_at " created at " created_at]]])
 
-(defn show-articles []
-  (layout "All Articles"
-    (map display-article (store/select-articles))))
+(defn show-unread-articles []
+  (layout "Unread Articles"
+    (map display-article (store/select-articles "unread = true"))))
+
+(defn show-read-articles []
+  (layout "Archive"
+    (map display-article (store/select-articles "unread = false"))))
 
 (defn show-starred-articles []
   (layout "Starred Articles"
@@ -127,11 +134,13 @@
   (GET "/public/*"
     (or (serve-file (params :*)) :next))
   (GET "/"
-    (show-articles))
-  (GET "/s"
+    (show-unread-articles))
+  (GET "/unread"
+    (show-unread-articles))
+  (GET "/archive"
+    (show-read-articles))
+  (GET "/starred"
     (show-starred-articles))
-  (GET "/articles"
-    (show-articles))
   (GET "/article"
     (create-article))
   (GET "/article/:id"
