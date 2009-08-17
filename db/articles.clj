@@ -8,7 +8,9 @@
 
 (defn now [] (java.sql.Timestamp. (.getTime (java.util.Date.))))
 
-(defn create-tables []
+(defn create-tables
+  "Create tables used by instapapure"
+  []
   (create-table :articles
     [:id         :int "IDENTITY" "PRIMARY KEY"]
     [:location   :varchar "NOT NULL"]
@@ -18,25 +20,37 @@
     [:starred    :boolean]
     [:created_at :datetime]))
 
-(defn insert-article [location title summary]
+(defn insert-article
+  "Insert a new (unread, unstarred) article"
+  [location title summary]
   (with-connection db
     (transaction
       (insert-values :articles
         [:location :title :summary :starred :unread :created_at]
         [ location  title  summary  false      true    (now)]))))
 
-(defn remove-article [id]
+(defn remove-article
+  "Remove the article corresponding to the id"
+  [id]
   (with-connection db
     (delete-rows :articles ["id=?" id])))
 
-(defn remove-nil-values [params]
+(defn remove-nil-values
+  "Removed entries with a nil value from the params"
+  [params]
   (select-keys params (filter #(not (nil? (params %))) (keys params))))
 
-(defn update-article [id params]
+(defn update-article
+  "Update article corresponding to the id.
+  The params' keys must correspond to the DB fields"
+  [id params]
   (with-connection db
       (update-values :articles ["id=?" id] (remove-nil-values params))))
 
 (defn select-articles
+  "Returns articles.
+  Without arg -> return all articles
+  With criteria -> return articles with criteria used by the WHERE SQL clause"
   ([]
     (with-connection db
       (with-query-results res ["select * from articles"] (doall res))))
@@ -44,11 +58,11 @@
     (with-connection db
       (with-query-results res [(str "select * from articles where " criteria)] (doall res)))))
 
-(defn select-article [id]
+(defn select-article
+  "Return the article corresponding to the id"
+  [id]
   (with-connection db
       (with-query-results res [(str "select * from articles where id=" id)] (first (doall res)))))
-
-
 
 (defn init [] 
   ;; we put the table creation in a try.
