@@ -43,15 +43,19 @@
 (defn get-article [id]
   (ds/get (article-key id)))
 
-(defn boolify [map klist]
+(defn modify-values [map fun klist]
+  "Apply a fun to the values in the map for the keys in klist"
   (reduce
     (fn [m k]
       (if (not (nil? (m k)))
-        (-> m (assoc k (Boolean. (m k))))
+        (assoc m k (fun (m k)))
         m))
     map klist))
 
+(defn booleanify [map klist]
+  (modify-values map #(Boolean. %) klist))
+
 (defn update-article [id params]
   (let [article (get-article id)]
-    (ds/put (boolify (merge article params) [:starred :unread]) (article-key id))))
+    (ds/put (booleanify (merge article params) [:starred :unread]) (article-key id))))
 
