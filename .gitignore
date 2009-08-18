@@ -1,5 +1,6 @@
-# temp directory used by HSQLDB
-hsqldb
+# Generated classes
+war/WEB-INF/classes
+war/WEB-INF/appengine-generated
 
 # xcode noise
 build
