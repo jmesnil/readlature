@@ -98,7 +98,7 @@
     (map display-article (articles/find-unread))))
 
 (defn show-read-articles
-  "Show the arcive with all read articles"
+  "Show the archive with all read articles"
   []
   (layout "Archive"
     (map display-article (articles/find-read))))
