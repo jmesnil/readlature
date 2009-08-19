@@ -131,7 +131,7 @@
   "Display HTML form to create a new article"
   []
   (layout "New Article"
-    (form-to [:post "/api/article"]
+    (form-to [:get "/api/article/new"]
       [:label "Location:"]
       [:input {:type "text" :name "location"}]
       [:br]
