@@ -33,6 +33,13 @@ a.title {
   text-align: right;
 }
 
+.nothing-to-read{
+  background-color: #eee;
+  margin: 2em;
+  border: 1px dotted #888;
+  text-align: center;
+}
+
 .footer {
   text-align: center;
   font-size: 0.75em;

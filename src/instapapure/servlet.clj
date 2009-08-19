@@ -103,12 +103,24 @@
       [:div.created_at " created at " created_at]]))
 
   
+(defn nothing-to-read []
+  (html
+    [:div.nothing-to-read
+      [:p "Nothing to read?"]
+      [:p "Drag the bookmarklet " (link-to bookmarklet "Read later") "
+        in your menu bar and use it next time you
+        find a good article you want to read later"]
+      [:p "You can also save articles directly from Google Reader."]]))
+    
 (defn show-unread-articles
   "Show all unread articles"
   []
-  (layout "Unread Articles"
-    (map display-article (articles/find-unread (users/current-user)))))
-
+  (let [articles (articles/find-unread (users/current-user))]
+    (layout "Unread Articles"
+      (if (empty? articles)
+        (nothing-to-read)
+        (map display-article (articles/find-unread (users/current-user)))))))
+        
 (defn show-read-articles
   "Show the archive with all read articles"
   []
