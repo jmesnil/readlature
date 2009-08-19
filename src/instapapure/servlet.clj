@@ -12,6 +12,7 @@
 ;; ************* ;;
 
 (def author {:name "Jeff Mesnil" :address "http://jmesnil.net/"})
+(def app-name "Instapapure")
 
 ;; ********* ;;
 ;; Web Layer ;;
@@ -58,7 +59,7 @@
   "HTML layout for all pages"
   (html
     [:head
-      [:title title]
+      [:title (str app-name " - " title)]
       (include-js "public/j/jquery.js"
                   "public/j/instapapure.js")
       (include-css "public/s/instapapure.css")
