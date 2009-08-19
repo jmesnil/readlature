@@ -168,6 +168,9 @@
   ;;  API
   (POST "/api/article"
     (new-article (:location params) (:title params) (:summary params)))
+  ;;  for Google Reader
+  (GET "/api/article/new"
+    (new-article (:location params) (:title params) (:summary params)))
   (POST "/api/article/delete"
     (delete-article (:id params)))
   (POST "/api/article/:id"
