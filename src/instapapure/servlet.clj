@@ -52,7 +52,8 @@
       [:title title]
       (include-js "public/j/jquery.js"
                   "public/j/instapapure.js")
-      (include-css "public/s/instapapure.css")]
+      (include-css "public/s/instapapure.css")
+      "<meta name=viewport content='initial-scale=1.0'>"]
     [:body
       (header title)
       body
