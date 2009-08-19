@@ -1,0 +1,14 @@
+<datastore-indexes>
+
+    <datastore-index kind="Article" ancestor="false" source="auto">
+        <property name="unread" direction="asc"/>
+        <property name="user" direction="asc"/>
+        <property name="created_at" direction="asc"/>
+    </datastore-index>
+
+    <datastore-index kind="Article" ancestor="false" source="auto">
+        <property name="starred" direction="asc"/>
+        <property name="user" direction="asc"/>
+        <property name="created_at" direction="asc"/>
+    </datastore-index>
+</datastore-indexes>

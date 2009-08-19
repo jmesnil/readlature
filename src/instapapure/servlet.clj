@@ -3,7 +3,9 @@
     :extends javax.servlet.http.HttpServlet)
   (:use clojure.set
         compojure)
-  (:require [instapapure.articles :as articles]))
+  (:require 
+    [instapapure.articles :as articles]
+    [appengine.users :as users]))
 
 ;; ************* ;;
 ;; Configuration ;;
@@ -41,6 +43,11 @@
   "HTML footer common to all pages"
   []
   (html
+    [:div.signout
+      "logged as " (users/current-user)
+      "("
+      (link-to (.createLogoutURL (users/user-service) "/") "sign out")
+      ")" ]
     [:div.footer
       "&copy; 2009 - "
       [:a {:href (:address author)} (:name author)]]))
@@ -55,9 +62,15 @@
       (include-css "public/s/instapapure.css")
       "<meta name=viewport content='initial-scale=1.0'>"]
     [:body
-      (header title)
-      body
-      (footer)]))
+        (header title)
+        body
+        (footer)]))
+
+(defn signin [user-service]
+  (html
+    [:h1 "Sign in"]
+    [:p
+      (link-to (.createLoginURL user-service "/") "Sign in before saving articles")]))
 
 (defn delete-article
   "Delete the article specified by the id parameter"
@@ -92,29 +105,31 @@
       [:div summary]
       [:div.created_at " created at " created_at]]))
 
+  
 (defn show-unread-articles
   "Show all unread articles"
   []
   (layout "Unread Articles"
-    (map display-article (articles/find-unread))))
+    (map display-article (articles/find-unread (users/current-user)))))
 
 (defn show-read-articles
   "Show the archive with all read articles"
   []
   (layout "Archive"
-    (map display-article (articles/find-read))))
+    (map display-article (articles/find-read (users/current-user)))))
 
 (defn show-starred-articles
   "Show starred articles"
   []
   (layout "Starred Articles"
-    (map display-article (articles/find-starred))))
+    (map display-article (articles/find-starred (users/current-user)))))
 
 (defn new-article 
   "Create a new article"
   [location title summary]
-  (articles/create-article location title summary)
-  (redirect-to location))
+  (if (.isUserLoggedIn (users/user-service))
+    (redirect-to (articles/create-article location title summary (users/current-user)))
+    ({:status 302 :headers {"Location" (.createLoginURL (users/user-service) "/")}})))
 
 (defn create-article
   "Display HTML form to create a new article"
@@ -180,4 +195,5 @@
   (ANY "*"
     (page-not-found)))
 
-(defservice instapapure-app)
+;; (defservice instapapure-app)
+(defservice (users/wrap-requiring-login instapapure-app))

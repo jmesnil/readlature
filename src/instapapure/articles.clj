@@ -10,30 +10,35 @@
 
 (defn now [] (java.util.Date.))
 
-(defn create-article [location title summary]
+(defn create-article [location title summary user]
   (ds/create {:kind "Article" 
               :location   location
               :title      title
               :summary    summary
               :unread     true
               :starred    false
-              :created_at (now)}))
+              :user       user
+              :created_at (now)})
+  location)
 
-(defn find-all []
+(defn find-all [user]
   (ds/find-all (doto (Query. "Article") (.addSort "created_at"))))
 
-(defn find-unread []
+(defn find-unread [user]
 (ds/find-all (doto (Query. "Article")
+       (.addFilter "user" Query$FilterOperator/EQUAL user)
        (.addFilter "unread" Query$FilterOperator/EQUAL true)
        (.addSort "created_at"))))
 
-(defn find-read []
+(defn find-read [user]
   (ds/find-all (doto (Query. "Article") 
+      (.addFilter "user" Query$FilterOperator/EQUAL user)
       (.addFilter "unread" Query$FilterOperator/EQUAL false)
       (.addSort "created_at"))))
 
-(defn find-starred []
+(defn find-starred [user]
   (ds/find-all (doto (Query. "Article") 
+      (.addFilter "user" Query$FilterOperator/EQUAL user)
       (.addFilter "starred" Query$FilterOperator/EQUAL true)
       (.addSort "created_at"))))
 
