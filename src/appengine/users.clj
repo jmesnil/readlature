@@ -31,4 +31,4 @@
     (let [user-service (UserServiceFactory/getUserService)]
       (if (.isUserLoggedIn user-service)
         (application request)
-        {:status 302 :headers {"Location" (.createLoginURL user-service (request :uri))}}))))
+        {:status 302 :headers {"Location" (.createLoginURL user-service "/")}}))))
