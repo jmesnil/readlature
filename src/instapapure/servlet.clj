@@ -32,25 +32,28 @@
       "&nbsp;&#9826;&nbsp;"
       [:a {:href "/starred"}  "Starred"]
       "&nbsp;&#9826;&nbsp;"
-      [:a {:href "/archive"} "Archive"]]
-    [:p
-      [:a {:href "/article"} "New Article"]
-      [:br]
-      "Drag the bookmarklet: "
-      [:a {:href bookmarklet} "Read later"]]))
+      [:a {:href "/archive"} "Archive"]]))
 
 (defn footer
   "HTML footer common to all pages"
   []
   (html
-    [:div.signout
-      "logged as " (users/current-user)
-      "("
-      (link-to (.createLogoutURL (users/user-service) "/") "sign out")
-      ")" ]
     [:div.footer
-      "&copy; 2009 - "
-      [:a {:href (:address author)} (:name author)]]))
+      [:div.bookmarklet
+        [:a {:href "/article"} "New Article"]
+        "&nbsp;&#9826;&nbsp;"
+        "Drag the bookmarklet: "
+        [:a {:href bookmarklet} "Read later"]]
+      [:div.signout
+        "logged as "
+        [:span.user (users/current-user)]
+        "("
+        (link-to (.createLogoutURL (users/user-service) "/") "sign out")
+        ")" ]
+      "<br>"
+      [:div.copyright
+        "&copy; 2009 - "
+        [:a {:href (:address author)} (:name author)]]]))
 
 (defn layout [title & body]
   "HTML layout for all pages"
