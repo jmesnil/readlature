@@ -42,6 +42,9 @@ a.title {
   font-weight: bold;
 }
 
+.copyright {
+  padding-top: 1.5em;
+}
 .copyright a {
   text-decoration: none;
   color: #888;

@@ -50,7 +50,6 @@
         "("
         (link-to (.createLogoutURL (users/user-service) "/") "sign out")
         ")" ]
-      "<br>"
       [:div.copyright
         "&copy; 2009 - "
         [:a {:href (:address author)} (:name author)]]]))
@@ -178,7 +177,6 @@
   (GET "/article/:id"
     (edit-article (:id params)))
   ;;  API
-  ;;  for Google Reader
   (GET "/api/article/new"
     (new-article (:location params) (:title params) (:summary params)))
   (POST "/api/article/delete"
