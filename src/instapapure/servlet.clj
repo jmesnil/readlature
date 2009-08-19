@@ -29,7 +29,7 @@
   (html
     [:h1 title]
     [:p
-      [:a {:href "/unread"}  "Unread"]
+      [:a {:href "/"}  "Unread"]
       "&nbsp;&#9826;&nbsp;"
       [:a {:href "/starred"}  "Starred"]
       "&nbsp;&#9826;&nbsp;"
@@ -166,8 +166,6 @@
   (GET "/public/*"
     (or (serve-file (params :*)) :next))
   (GET "/"
-    (show-unread-articles))
-  (GET "/unread"
     (show-unread-articles))
   (GET "/archive"
     (show-read-articles))
