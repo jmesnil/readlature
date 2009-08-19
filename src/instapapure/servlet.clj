@@ -66,12 +66,6 @@
         body
         (footer)]))
 
-(defn signin [user-service]
-  (html
-    [:h1 "Sign in"]
-    [:p
-      (link-to (.createLoginURL user-service "/") "Sign in before saving articles")]))
-
 (defn delete-article
   "Delete the article specified by the id parameter"
   [id]
@@ -127,9 +121,8 @@
 (defn new-article 
   "Create a new article"
   [location title summary]
-  (if (.isUserLoggedIn (users/user-service))
-    (redirect-to (articles/create-article location title summary (users/current-user)))
-    ({:status 302 :headers {"Location" (.createLoginURL (users/user-service) "/")}})))
+    (articles/create-article location title summary (users/current-user))
+    (redirect-to location))
 
 (defn create-article
   "Display HTML form to create a new article"
