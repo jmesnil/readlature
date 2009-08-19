@@ -34,9 +34,13 @@ a.title {
 }
 
 .nothing-to-read{
-  background-color: #eee;
+  color: #000; 
+  line-height: 20px; 
+  padding: 10px; 
+  -webkit-border-radius: 10px; 
+  -moz-border-radius: 10px;
+  background-color: #ddd;
   margin: 2em;
-  border: 1px dotted #888;
   text-align: center;
 }
 
