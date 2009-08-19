@@ -178,8 +178,6 @@
   (GET "/article/:id"
     (edit-article (:id params)))
   ;;  API
-  (POST "/api/article"
-    (new-article (:location params) (:title params) (:summary params)))
   ;;  for Google Reader
   (GET "/api/article/new"
     (new-article (:location params) (:title params) (:summary params)))
