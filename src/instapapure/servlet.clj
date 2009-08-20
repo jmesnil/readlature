@@ -102,12 +102,12 @@
 (defn delete-article
   "Delete the article specified by the id parameter"
   [id]
-  (articles/remove-article id))
+  (articles/remove-article id (users/current-user)))
 
 (defn update-article
   "Update the article identified by the id parameter."
   [id params]
-  (articles/update-article id params)
+  (articles/update-article id params (users/current-user))
   200)
 
 (defn display-article
@@ -210,7 +210,7 @@
 (defn edit-article
   "Display HTML form to edit an article"
   [id]
-  (let [article (articles/get-article id)]
+  (let [article (articles/get-article id (users/current-user))]
     (layout :edit-articles
       (form-to [:post (str "/api/article/" id)]
         [:input {:type "hidden" :name "id" :value (:id article)}]

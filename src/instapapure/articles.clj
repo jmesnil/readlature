@@ -42,11 +42,18 @@
       (.addFilter "starred" Query$FilterOperator/EQUAL true)
       (.addSort "created_at"))))
 
-(defn remove-article [id]
-  (ds/delete (article-key id)))
+(defn remove-article [id user]
+  (let [anid (article-key id)
+        article (ds/get anid)]
+    (if (= (:user article) user)
+      (ds/delete anid)
+      (throw (IllegalStateException. "Only user who saved the article can remove it.")))))
 
-(defn get-article [id]
-  (ds/get (article-key id)))
+(defn get-article [id user]
+  (let [article (ds/get (article-key id))]
+    (if (= (:user article) user)
+      article
+      (throw (IllegalStateException. "Only user who saved the article can retrieve it.")))))
 
 (defn modify-values [map fun klist]
   "Apply a fun to the values in the map for the keys in klist"
@@ -60,7 +67,10 @@
 (defn booleanify [map klist]
   (modify-values map #(Boolean. %) klist))
 
-(defn update-article [id params]
-  (let [article (get-article id)]
-    (ds/put (booleanify (merge article params) [:starred :unread]) (article-key id))))
+(defn update-article [id params user]
+  (let [anid (article-key id)
+        article (ds/get anid)]
+    (if (= (:user article) user)
+      (ds/put (booleanify (merge article params) [:starred :unread]) anid)
+      (throw (IllegalStateException. "Only user who saved the article can update it.")))))
 
