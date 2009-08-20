@@ -181,23 +181,23 @@
 (defn show-unread-articles
   "Show all unread articles"
   []
-  (articles-page :unread
-     (articles/find-unread (users/current-user))
-     nothing-to-read))
+  (layout :unread
+    (nothing-to-read)
+    (map display-article (articles/find-unread (users/current-user)))))
 
 (defn show-starred-articles
   "Show starred articles"
   []
-  (articles-page :starred
-    (articles/find-starred (users/current-user))
-    nothing-starred))
+  (layout :starred
+    (nothing-starred)
+    (map display-article (articles/find-starred (users/current-user)))))
 
 (defn show-read-articles
   "Show the archive with all read articles"
   []
-  (articles-page :archive
-    (articles/find-read (users/current-user))
-    nothing-in-archive))
+  (layout :archive
+    (nothing-in-archive)
+    (map display-article (articles/find-read (users/current-user)))))
 
 (defn new-article
   "Create a new article"
