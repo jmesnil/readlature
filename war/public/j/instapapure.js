@@ -1,24 +1,30 @@
 jQuery(document).ready(function() {
 
-$("a.star, a.delete").mouseover(function() {
+$("img.star, img.star-empty, a.delete").mouseover(function() {
   $(this).addClass("cursored");
 });
 
-toggleStar = function(star) {
-  starred = !star.hasClass("starred");
-  char = (starred ? "&#9733;" : "&#9734;");
-  star.html(char);
-  return starred;
-}
-
-$("a.star").click(function() {
-  star = $(this);
-  starred = toggleStar(star);
-  id = star.parents(".article").attr("id");
+star = function(article, starred)
+{
+  id = article.attr("id");
   $.post("/api/article/" + id, {id: id, starred: starred},
     function(data) {
-      star.toggleClass("starred");
+      if (starred) {
+        article.find('img.star-empty').hide().end().find('img.star').show();
+      } else {
+        article.find('img.star-empty').show().end().find('img.star').hide();
+      }
     });
+}
+
+$("img.star-empty").click(function() {
+  article = $(this).parents(".article");
+  star(article, true);
+});
+
+$("img.star").click(function() {
+  article = $(this).parents(".article");
+  star(article, false);
 });
 
 /* update the status to 'read' before going to the article */

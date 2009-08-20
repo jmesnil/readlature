@@ -3,7 +3,7 @@
     :extends javax.servlet.http.HttpServlet)
   (:use clojure.set
         compojure)
-  (:require 
+  (:require
     [instapapure.articles :as articles]
     [appengine.users :as users]))
 
@@ -34,6 +34,15 @@
   pageTracker._trackPageview();
   } catch(err) {}</script>"
 )
+
+(defn star-image [displayed]
+  [:img.star {:src "public/i/star.png"
+              :title "Unstar it"
+              :style (str "display: " (if displayed "inline" "none"))}])
+(defn star-empty-image [displayed]
+  [:img.star-empty {:src "public/i/star-empty.png"
+              :title "Sar it"
+              :style (str "display: " (if displayed "inline" "none"))}])
 
 (defn header
   "HTML header common to all pages"
@@ -105,9 +114,7 @@
   (let [id (.getId kkey)]
     [:div.article {:id id}
       [:div
-        (if starred
-            [:a {:class "star starred"   :title "Star it"  } "&#9733;"]
-            [:a {:class "star unstarred" :title "Unstar it"} "&#9734;"])
+        (star-image starred) (star-empty-image (not starred))
         "&nbsp;"
         [:a {:class (str "title " (if unread "unread" "read")) :href location} title]
         "&nbsp;"
@@ -115,16 +122,26 @@
       [:div summary]
       [:div.created_at " created at " created_at]]))
 
-  
+
 (defn nothing-to-read []
   (html
-    [:div.nothing-to-read
+    [:div.advice
       [:p "Nothing to read?"]
       [:p "Drag the bookmarklet " (link-to bookmarklet "Read later") "
         in your menu bar and use it next time you
         find a good article you want to read later"]
       [:p "You can also save articles directly from Google Reader."]]))
-    
+
+(defn nothing-starred []
+  (html
+    [:div.advice
+      [:p "Nothing starred?"]
+      [:p "If you find a good article you really like, you can \"star\" it by
+        clicking on " (star-empty-image true) " at the left of the article. Starred article will always
+        be displayed in the " (link-to "/starred" "Starred") " section
+        whether they have been read or not"]
+      [:p "To \"unstar\" a starred article, click on " (star-image true) "."]]))
+
 (defn show-unread-articles
   "Show all unread articles"
   []
@@ -132,8 +149,8 @@
     (layout "Unread Articles"
       (if (empty? articles)
         (nothing-to-read)
-        (map display-article (articles/find-unread (users/current-user)))))))
-        
+        (map display-article articles)))))
+
 (defn show-read-articles
   "Show the archive with all read articles"
   []
@@ -143,10 +160,13 @@
 (defn show-starred-articles
   "Show starred articles"
   []
-  (layout "Starred Articles"
-    (map display-article (articles/find-starred (users/current-user)))))
+  (let [articles (articles/find-starred (users/current-user))]
+    (layout "Starred Articles"
+      (if (empty? articles)
+        (nothing-starred)
+        (map display-article articles)))))
 
-(defn new-article 
+(defn new-article
   "Create a new article"
   [location title summary]
     (articles/create-article location title summary (users/current-user))
@@ -207,7 +227,7 @@
     (delete-article (:id params)))
   (POST "/api/article/:id"
     (update-article (:id params) (dissoc params :id)))
-  ;; Anything else  
+  ;; Anything else
   (ANY "*"
     (page-not-found)))
 

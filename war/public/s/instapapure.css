@@ -5,9 +5,8 @@ body {
 .article {
 }
 
-a.star {
-  font-size: 1.5em;
-  color: #fc3;
+img.star {
+  color: #fff;
 }
 
 a.delete {
@@ -33,7 +32,7 @@ a.title {
   text-align: right;
 }
 
-.nothing-to-read{
+.advice{
   color: #000; 
   line-height: 20px; 
   padding: 10px; 
