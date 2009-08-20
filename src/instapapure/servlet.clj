@@ -29,11 +29,11 @@
   (html
     [:h1 title]
     [:p
-      [:a {:href "/"}  "Unread"]
+      (link-to "/" "Unread")
       "&nbsp;&#9826;&nbsp;"
-      [:a {:href "/starred"}  "Starred"]
+      (link-to "/starred" "Starred")
       "&nbsp;&#9826;&nbsp;"
-      [:a {:href "/archive"} "Archive"]]))
+      (link-to "/archive" "Archive")]))
 
 (defn footer
   "HTML footer common to all pages"
@@ -41,19 +41,19 @@
   (html
     [:div.footer
       [:div.bookmarklet
-        [:a {:href "/article"} "New Article"]
+        (link-to "/article" "New Article")
         "&nbsp;&#9826;&nbsp;"
         "Drag the bookmarklet: "
-        [:a {:href bookmarklet} "Read later"]]
+        (link-to bookmarklet "Read later")]
       [:div.signout
         "logged as "
         [:span.user (users/current-user)]
-        "("
+        " ("
         (link-to (.createLogoutURL (users/user-service) "/") "sign out")
         ")" ]
       [:div.copyright
         "&copy; 2009 - "
-        [:a {:href (:address author)} (:name author)]]]))
+        (link-to (:address author) (:name author))]]))
 
 (defn layout [title & body]
   "HTML layout for all pages"
