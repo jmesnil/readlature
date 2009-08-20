@@ -145,7 +145,7 @@
       [:div.created_at " created at " created_at]]))
 
 
-(defn nothing-to-read []
+(defn unread-help []
   (html
     [:div.help
       [:p "Nothing to read?"]
@@ -155,14 +155,14 @@
       [:p "You can also save articles directly from Google Reader (see the "
           (link-to "/public/google-reader.html" "instructions") ")."]]))
 
-(defn nothing-in-archive []
+(defn archive-help []
   (html
     [:div.help
       [:p "Nothing in the archive?"]
       [:p "When you have read an unread article, it will be moved to the archive.
           It will remain there until you delete it."]]))
 
-(defn nothing-starred []
+(defn starred-help []
   (html
     [:div.help
       [:p "Nothing starred?"]
@@ -182,21 +182,21 @@
   "Show all unread articles"
   []
   (layout :unread
-    (nothing-to-read)
+    (unread-help)
     (map display-article (articles/find-unread (users/current-user)))))
 
 (defn show-starred-articles
   "Show starred articles"
   []
   (layout :starred
-    (nothing-starred)
+    (starred-help)
     (map display-article (articles/find-starred (users/current-user)))))
 
 (defn show-read-articles
   "Show the archive with all read articles"
   []
   (layout :archive
-    (nothing-in-archive)
+    (archive-help)
     (map display-article (articles/find-read (users/current-user)))))
 
 (defn new-article
