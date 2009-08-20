@@ -140,6 +140,13 @@
         find a good article you want to read later"]
       [:p "You can also save articles directly from Google Reader."]]))
 
+(defn nothing-in-archive []
+  (html
+    [:div.advice
+      [:p "Nothing in the archive?"]
+      [:p "When you have read an unread article, it will be moved to the archive.
+          It will remain there until you delete it."]]))
+
 (defn nothing-starred []
   (html
     [:div.advice
@@ -150,29 +157,33 @@
         whether they have been read or not"]
       [:p "To \"unstar\" a starred article, click on " (star-image true) "."]]))
 
+(defn articles-page
+  [type articles advice-section]
+  (layout type
+    (if (empty? articles)
+      (advice-section)
+      (map display-article articles))))
+
 (defn show-unread-articles
   "Show all unread articles"
   []
-  (let [articles (articles/find-unread (users/current-user))]
-    (layout :unread
-      (if (empty? articles)
-        (nothing-to-read)
-        (map display-article articles)))))
-
-(defn show-read-articles
-  "Show the archive with all read articles"
-  []
-  (layout :archive
-    (map display-article (articles/find-read (users/current-user)))))
+  (articles-page :unread
+     (articles/find-unread (users/current-user))
+     nothing-to-read))
 
 (defn show-starred-articles
   "Show starred articles"
   []
-  (let [articles (articles/find-starred (users/current-user))]
-    (layout :starred
-      (if (empty? articles)
-        (nothing-starred)
-        (map display-article articles)))))
+  (articles-page :starred
+    (articles/find-starred (users/current-user))
+    nothing-starred))
+
+(defn show-read-articles
+  "Show the archive with all read articles"
+  []
+  (articles-page :archive
+    (articles/find-read (users/current-user))
+    nothing-in-archive))
 
 (defn new-article
   "Create a new article"
@@ -195,7 +206,7 @@
       (text-area "summary")
       [:br]
       (submit-button "save"))))
-            
+
 (defn edit-article
   "Display HTML form to edit an article"
   [id]
