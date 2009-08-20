@@ -57,7 +57,7 @@
               :style (str "display: " (if displayed "inline" "none"))}])
 (defn star-empty-image [displayed]
   [:img.star-empty {:src "/public/i/star-empty.png"
-              :title "Sar it"
+              :title "Star it"
               :style (str "display: " (if displayed "inline" "none"))}])
 (def delete-image
   [:img.delete {:src "/public/i/cross.png" :title "Delete it"}])
@@ -149,24 +149,24 @@
 (defn unread-help []
   (html
     [:div.help
-      [:p "Nothing to read?"]
+      [:p [:em "Nothing to read?"]]
       [:p "Drag the bookmarklet " (link-to bookmarklet "Read later") "
-        in your menu bar and use it next time you
-        find a good article you want to read later"]
+        in your menu bar and use it next time you find a good article you want
+        to read later"]
       [:p "You can also save articles directly from Google Reader (see the "
           (link-to "/public/google-reader.html" "instructions") ")."]]))
 
 (defn archive-help []
   (html
     [:div.help
-      [:p "Nothing in the archive?"]
+      [:p [:em "Nothing in the archive?"]]
       [:p "When you have read an unread article, it will be moved to the archive.
           It will remain there until you delete it."]]))
 
 (defn starred-help []
   (html
     [:div.help
-      [:p "Nothing starred?"]
+      [:p [:em "Nothing starred?"]]
       [:p "If you find a good article you really like, you can \"star\" it by
         clicking on " (star-empty-image true) " at the left of the article. Starred article will always
         be displayed in the " (link-to "/starred" "Starred") " section
