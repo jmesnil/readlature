@@ -46,7 +46,7 @@ $("img.delete").click(function() {
     id = article.attr("id");
     $.post("/api/article/delete", {id: id},
       function(data) {
-        article.slideToggle("slow");
+        article.slideToggle();
       });
   }
 });
