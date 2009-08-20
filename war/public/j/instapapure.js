@@ -1,5 +1,9 @@
 jQuery(document).ready(function() {
 
+toggleAdvice = function() {
+  $(".advice").toggle($(".article").length == 0);
+}
+
 $("img.star, img.star-empty, a.delete").mouseover(function() {
   $(this).addClass("cursored");
 });
@@ -46,9 +50,14 @@ $("img.delete").click(function() {
     id = article.attr("id");
     $.post("/api/article/delete", {id: id},
       function(data) {
-        article.slideToggle();
+        article.slideToggle(function() {
+          article.remove();
+          toggleAdvice();
+        });
       });
   }
 });
+
+toggleAdvice();
 
 });

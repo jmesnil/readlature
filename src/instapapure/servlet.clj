@@ -175,9 +175,8 @@
 (defn articles-page
   [type articles advice-section]
   (layout type
-    (if (empty? articles)
-      (advice-section)
-      (map display-article articles))))
+    (advice-section)
+    (map display-article articles)))
 
 (defn show-unread-articles
   "Show all unread articles"
