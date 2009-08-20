@@ -1,9 +1,0 @@
-Stars
-=====
-
-* when unstarring a starred article from the "Starred Articles" page,
-  remove it from the page with jQuery
-  
-Edit Article
-=========
-* modify all and starred pages to update inline
