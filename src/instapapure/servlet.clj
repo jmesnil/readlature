@@ -36,15 +36,15 @@
 )
 
 (defn star-image [displayed]
-  [:img.star {:src "public/i/star.png"
+  [:img.star {:src "/public/i/star.png"
               :title "Unstar it"
               :style (str "display: " (if displayed "inline" "none"))}])
 (defn star-empty-image [displayed]
-  [:img.star-empty {:src "public/i/star-empty.png"
+  [:img.star-empty {:src "/public/i/star-empty.png"
               :title "Sar it"
               :style (str "display: " (if displayed "inline" "none"))}])
 (def delete-image
-  [:img.delete {:src "public/i/cross.png" :title "Delete it"}])
+  [:img.delete {:src "/public/i/cross.png" :title "Delete it"}])
 
 (defn header
   "HTML header common to all pages"
@@ -89,9 +89,9 @@
   (html
     [:head
       [:title app-name]
-      (include-js "public/j/jquery.js"
-                  "public/j/instapapure.js")
-      (include-css "public/s/instapapure.css")
+      (include-js "/public/j/jquery.js"
+                  "/public/j/instapapure.js")
+      (include-css "/public/s/instapapure.css")
       "<meta name=viewport content='initial-scale=1.0'>"]
     [:body
         (header title)
@@ -183,7 +183,7 @@
 (defn create-article
   "Display HTML form to create a new article"
   []
-  (layout "New Article"
+  (layout :new-article
     (form-to [:get "/api/article/new"]
       [:label "Location:"]
       [:input {:type "text" :name "location"}]
@@ -195,12 +195,12 @@
       (text-area "summary")
       [:br]
       (submit-button "save"))))
-
+            
 (defn edit-article
   "Display HTML form to edit an article"
   [id]
   (let [article (articles/get-article id)]
-    (layout "Edit Post"
+    (layout :edit-articles
       (form-to [:post (str "/api/article/" id)]
         [:input {:type "hidden" :name "id" :value (:id article)}]
         [:label "Location:"]
