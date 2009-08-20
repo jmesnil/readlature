@@ -49,6 +49,8 @@
   } catch(err) {}</script>"
 )
 
+(def nav-separator "&nbsp;&#9826;&nbsp;")
+
 (defn star-image [displayed]
   [:img.star {:src "/public/i/star.png"
               :title "Unstar it"
@@ -60,23 +62,22 @@
 (def delete-image
   [:img.delete {:src "/public/i/cross.png" :title "Delete it"}])
 
+(defn nav-header [type header-type header-title href]
+  (if (= type header-type)
+    [:span.current header-title]
+    (link-to href header-title)))
+
 (defn header
   "HTML header common to all pages"
-  [title]
+  [type]
   (html
     [:h1 app-name]
     [:div.nav
-      (if (= title :unread)
-        [:span.current "Unread"]
-        (link-to "/" "Unread"))
-      "&nbsp;&#9826;&nbsp;"
-      (if (= title :starred)
-        [:span.current "Starred"]
-        (link-to "/starred" "Starred"))
-      "&nbsp;&#9826;&nbsp;"
-      (if (= title :archive)
-        [:span.current "Archive"]
-        (link-to "/archive" "Archive"))]))
+      (nav-header type :unread "Unread" "/")
+      nav-separator
+      (nav-header type :starred "Starred" "/starred")
+      nav-separator
+      (nav-header type :archive "Archive" "/archive")]))
 
 (defn footer
   "HTML footer common to all pages"
@@ -85,7 +86,7 @@
     [:div.footer
       [:div.bookmarklet
         (link-to "/article" "New Article")
-        "&nbsp;&#9826;&nbsp;"
+        nav-separator
         "Drag the bookmarklet: "
         (link-to bookmarklet "Read later")]
       [:div.signout
