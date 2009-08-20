@@ -50,13 +50,19 @@
   "HTML header common to all pages"
   [title]
   (html
-    [:h1 title]
-    [:p
-      (link-to "/" "Unread")
+    [:h1 app-name]
+    [:div.nav
+      (if (= title :unread)
+        [:span.current "Unread"]
+        (link-to "/" "Unread"))
       "&nbsp;&#9826;&nbsp;"
-      (link-to "/starred" "Starred")
+      (if (= title :starred)
+        [:span.current "Starred"]
+        (link-to "/starred" "Starred"))
       "&nbsp;&#9826;&nbsp;"
-      (link-to "/archive" "Archive")]))
+      (if (= title :archive)
+        [:span.current "Archive"]
+        (link-to "/archive" "Archive"))]))
 
 (defn footer
   "HTML footer common to all pages"
@@ -82,7 +88,7 @@
   "HTML layout for all pages"
   (html
     [:head
-      [:title (str app-name " - " title)]
+      [:title app-name]
       (include-js "public/j/jquery.js"
                   "public/j/instapapure.js")
       (include-css "public/s/instapapure.css")
@@ -148,7 +154,7 @@
   "Show all unread articles"
   []
   (let [articles (articles/find-unread (users/current-user))]
-    (layout "Unread Articles"
+    (layout :unread
       (if (empty? articles)
         (nothing-to-read)
         (map display-article articles)))))
@@ -156,14 +162,14 @@
 (defn show-read-articles
   "Show the archive with all read articles"
   []
-  (layout "Archive"
+  (layout :archive
     (map display-article (articles/find-read (users/current-user)))))
 
 (defn show-starred-articles
   "Show starred articles"
   []
   (let [articles (articles/find-starred (users/current-user))]
-    (layout "Starred Articles"
+    (layout :starred
       (if (empty? articles)
         (nothing-starred)
         (map display-article articles)))))

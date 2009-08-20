@@ -2,7 +2,21 @@ body {
   font-family: Verdana, Helvetica;
 }
 
+.nav {
+  margin-bottom: 2em;
+  text-align:center;
+}
+
+.nav .current {
+  font-weight: bold;
+}
+
+h1 {
+  text-align:center;
+}
+
 .article {
+  margin: 1.5em;
 }
 
 img.star {
