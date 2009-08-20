@@ -147,7 +147,7 @@
 
 (defn nothing-to-read []
   (html
-    [:div.advice
+    [:div.help
       [:p "Nothing to read?"]
       [:p "Drag the bookmarklet " (link-to bookmarklet "Read later") "
         in your menu bar and use it next time you
@@ -157,14 +157,14 @@
 
 (defn nothing-in-archive []
   (html
-    [:div.advice
+    [:div.help
       [:p "Nothing in the archive?"]
       [:p "When you have read an unread article, it will be moved to the archive.
           It will remain there until you delete it."]]))
 
 (defn nothing-starred []
   (html
-    [:div.advice
+    [:div.help
       [:p "Nothing starred?"]
       [:p "If you find a good article you really like, you can \"star\" it by
         clicking on " (star-empty-image true) " at the left of the article. Starred article will always

@@ -1,7 +1,7 @@
 jQuery(document).ready(function() {
 
-toggleAdvice = function() {
-  $(".advice").toggle($(".article").length == 0);
+toggleHelp = function() {
+  $(".help").toggle($(".article").length == 0);
 }
 
 $("img.star, img.star-empty, a.delete").mouseover(function() {
@@ -52,12 +52,12 @@ $("img.delete").click(function() {
       function(data) {
         article.slideToggle(function() {
           article.remove();
-          toggleAdvice();
+          toggleHelp();
         });
       });
   }
 });
 
-toggleAdvice();
+toggleHelp();
 
 });
