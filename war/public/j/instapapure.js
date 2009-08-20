@@ -38,7 +38,7 @@ $("a.unread").click(function(e) {
     });
 });
 
-$("a.delete").click(function() {
+$("img.delete").click(function() {
   title = $(this).prev("a").text();
   if (confirm('Are you sure you want to delete "' + title + '"?'))
   {

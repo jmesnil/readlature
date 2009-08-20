@@ -43,6 +43,8 @@
   [:img.star-empty {:src "public/i/star-empty.png"
               :title "Sar it"
               :style (str "display: " (if displayed "inline" "none"))}])
+(def delete-image
+  [:img.delete {:src "public/i/cross.png" :title "Delete it"}])
 
 (defn header
   "HTML header common to all pages"
@@ -118,7 +120,7 @@
         "&nbsp;"
         [:a {:class (str "title " (if unread "unread" "read")) :href location} title]
         "&nbsp;"
-        [:a.delete { :title "Permanently Delete"} "&#10006;"]]
+        delete-image]
       [:div summary]
       [:div.created_at " created at " created_at]]))
 
