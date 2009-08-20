@@ -138,7 +138,8 @@
       [:p "Drag the bookmarklet " (link-to bookmarklet "Read later") "
         in your menu bar and use it next time you
         find a good article you want to read later"]
-      [:p "You can also save articles directly from Google Reader."]]))
+      [:p "You can also save articles directly from Google Reader (see the "
+          (link-to "/public/google-reader.html" "instructions") ")."]]))
 
 (defn nothing-in-archive []
   (html
