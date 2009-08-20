@@ -7,8 +7,14 @@ body {
   text-align:center;
 }
 
-.nav .current {
+.nav .current {  
   font-weight: bold;
+  color: #000; 
+  line-height: 20px; 
+  padding: 10px; 
+  -webkit-border-radius: 10px; 
+  -moz-border-radius: 10px;
+  background-color: #ddd;
 }
 
 h1 {
