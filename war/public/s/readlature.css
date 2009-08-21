@@ -53,6 +53,11 @@ a.title {
 }
 
 .help {
+  /* by default, hide it to avoid
+     it "clips" if the page is slow
+     to load */
+
+  display: none;
   color: #000;
   line-height: 20px;
   padding: 10px;
