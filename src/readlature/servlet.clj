@@ -107,17 +107,18 @@
 (defn layout [title & body]
   "HTML layout for all pages"
   (html
-    [:head
-      [:title app-name]
-      (include-js jquery-url
-                  "/public/j/readlature.js")
-      (include-css "/public/s/readlature.css")
-      "<meta name=viewport content='initial-scale=1.0'>"]
-    [:body
+    [:html
+      [:head
+        [:title app-name]
+        (include-js jquery-url
+                    "/public/j/readlature.js")
+        (include-css "/public/s/readlature.css")
+        "<meta name=viewport content='initial-scale=1.0'>"]
+      [:body
         (header title)
         body
         (footer)
-        google-analytics]))
+        google-analytics]]))
 
 (defn delete-article
   "Delete the article specified by the id parameter"
