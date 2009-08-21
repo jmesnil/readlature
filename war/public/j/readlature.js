@@ -22,6 +22,13 @@ star = function(article, starred)
         article.find('img.star-empty').hide().end().find('img.star').show();
       } else {
         article.find('img.star-empty').show().end().find('img.star').hide();
+        if (document.location.href.match(/\/starred$/))
+        {
+          article.slideToggle(function() {
+            article.remove();
+            toggleHelp();
+          });
+        }
       }
     });
 }
