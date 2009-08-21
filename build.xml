@@ -1,4 +1,4 @@
-<project name="instapapure" basedir="." default="devserver">
+<project name="readlature" basedir="." default="devserver">
 
   <property environment="env" />	
   <property name="sdk.dir" location="/Users/jmesnil/Applications/appengine-java-sdk-1.2.2" />
@@ -31,7 +31,7 @@
     <java classname="clojure.lang.Compile" classpathref="project.classpath" failonerror="true">
       <classpath path="${src.dir}" />
       <sysproperty key="clojure.compile.path" value="${classes.dir}" />
-      <arg value="instapapure.servlet" />
+      <arg value="readlature.servlet" />
     </java>
   </target>
     

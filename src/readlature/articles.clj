@@ -12,7 +12,7 @@
 ;; See the License for the specific language governing permissions and
 ;; limitations under the License.
 
-(ns instapapure.articles
+(ns readlature.articles
   (:require [appengine.datastore :as ds])
   (:import (com.google.appengine.api.datastore KeyFactory Query Query$FilterOperator)))
 

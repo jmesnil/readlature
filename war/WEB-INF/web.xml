@@ -4,13 +4,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
     version="2.5">
-  <display-name>Instapapure</display-name>
+  <display-name>Read Lature</display-name>
   <servlet>
-    <servlet-name>instapapure</servlet-name>
-    <servlet-class>instapapure.servlet</servlet-class>
+    <servlet-name>readlature</servlet-name>
+    <servlet-class>readlature.servlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>instapapure</servlet-name>
+    <servlet-name>readlature</servlet-name>
     <url-pattern>/*</url-pattern>
   </servlet-mapping>
 </web-app>
