@@ -40,6 +40,8 @@
 (def bookmarklet-link
   [:a.bookmarklet {:href bookmarklet } "Read Lature"])
 
+(def jquery-url "http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js")
+
 (def google-analytics
   "<script type=\"text/javascript\">
   var gaJsHost = ((\"https:\" == document.location.protocol) ? \"https://ssl.\" : \"http://www.\");
@@ -107,7 +109,7 @@
   (html
     [:head
       [:title app-name]
-      (include-js "/public/j/jquery.js"
+      (include-js jquery-url
                   "/public/j/readlature.js")
       (include-css "/public/s/readlature.css")
       "<meta name=viewport content='initial-scale=1.0'>"]
