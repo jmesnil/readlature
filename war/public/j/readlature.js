@@ -8,6 +8,11 @@ $("img.star, img.star-empty, a.delete").mouseover(function() {
   $(this).addClass("cursored");
 });
 
+$("a.bookmarklet").click(function(e) {
+  e.preventDefault();
+  alert("Drag this link to your Bookmarks bar to install it.");
+});
+
 star = function(article, starred)
 {
   id = article.attr("id");
