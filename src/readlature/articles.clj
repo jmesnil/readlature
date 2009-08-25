@@ -14,7 +14,11 @@
 
 (ns readlature.articles
   (:require [appengine.datastore :as ds])
-  (:import (com.google.appengine.api.datastore KeyFactory Query Query$FilterOperator)))
+  (:import (com.google.appengine.api.datastore 
+              KeyFactory 
+              Query
+              Query$FilterOperator
+              Query$SortDirection)))
 
 (defmulti article-key class)
 (defmethod article-key String [id]
@@ -36,25 +40,26 @@
   location)
 
 (defn find-all [user]
-  (ds/find-all (doto (Query. "Article") (.addSort "created_at"))))
+  (ds/find-all (doto (Query. "Article") 
+       (.addSort "created_at" Query$SortDirection/DESCENDING))))
 
 (defn find-unread [user]
 (ds/find-all (doto (Query. "Article")
        (.addFilter "user" Query$FilterOperator/EQUAL user)
        (.addFilter "unread" Query$FilterOperator/EQUAL true)
-       (.addSort "created_at"))))
+       (.addSort "created_at"  Query$SortDirection/DESCENDING))))
 
 (defn find-read [user]
   (ds/find-all (doto (Query. "Article") 
       (.addFilter "user" Query$FilterOperator/EQUAL user)
       (.addFilter "unread" Query$FilterOperator/EQUAL false)
-      (.addSort "created_at"))))
+      (.addSort "created_at" Query$SortDirection/DESCENDING))))
 
 (defn find-starred [user]
   (ds/find-all (doto (Query. "Article") 
       (.addFilter "user" Query$FilterOperator/EQUAL user)
       (.addFilter "starred" Query$FilterOperator/EQUAL true)
-      (.addSort "created_at"))))
+      (.addSort "created_at" Query$SortDirection/DESCENDING))))
 
 (defn remove-article [id user]
   (let [anid (article-key id)
