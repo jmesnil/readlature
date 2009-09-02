@@ -20,6 +20,8 @@
               Query$FilterOperator
               Query$SortDirection)))
 
+(def summary-max-length 500)
+
 (defmulti article-key class)
 (defmethod article-key String [id]
   (KeyFactory/createKey "Article" (Long. id)))
@@ -28,11 +30,18 @@
 
 (defn now [] (java.util.Date.))
 
+(defn trim
+  "Trim summary if it is too long and append '...'"
+  [summary length]
+  (if (< (.length summary) length)
+    summary
+    (str (.substring summary 0 (- length 4)) "...")))
+
 (defn create-article [location title summary user]
-  (ds/create {:kind "Article"
+  (ds/create {:kind       "Article"
               :location   location
               :title      title
-              :summary    summary
+              :summary    (trim summary summary-max-length)
               :unread     true
               :starred    false
               :user       user
