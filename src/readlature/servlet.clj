@@ -167,7 +167,7 @@
     [:div.help
       [:p [:em "Nothing in the archive?"]]
       [:p "When you have read an unread article, it will be moved to the archive.
-          It will remain there until you delete it by clicking on " 
+          It will remain there until you delete it by clicking on "
           [:img {:src "/public/i/cross.png"}]
           " on the right of the article's title."]]))
 
@@ -177,7 +177,7 @@
       [:p [:em "Nothing starred?"]]
       [:p "If you find a good article you really like, you can \"star\" it by
         clicking on " [:img {:src "/public/i/star-empty.png"}] " at the left of the article's title.
-        Starred article will always be displayed in the " 
+        Starred article will always be displayed in the "
         (link-to "/starred" "Starred") " section whether they have been read or not"]
       [:p "To \"unstar\" a starred article, click on " [:img {:src "/public/i/star.png"}]  "."]]))
 

@@ -14,8 +14,8 @@
 
 (ns readlature.articles
   (:require [appengine.datastore :as ds])
-  (:import (com.google.appengine.api.datastore 
-              KeyFactory 
+  (:import (com.google.appengine.api.datastore
+              KeyFactory
               Query
               Query$FilterOperator
               Query$SortDirection)))
@@ -29,7 +29,7 @@
 (defn now [] (java.util.Date.))
 
 (defn create-article [location title summary user]
-  (ds/create {:kind "Article" 
+  (ds/create {:kind "Article"
               :location   location
               :title      title
               :summary    summary
@@ -40,7 +40,7 @@
   location)
 
 (defn find-all [user]
-  (ds/find-all (doto (Query. "Article") 
+  (ds/find-all (doto (Query. "Article")
        (.addSort "created_at" Query$SortDirection/DESCENDING))))
 
 (defn find-unread [user]
@@ -50,13 +50,13 @@
        (.addSort "created_at"  Query$SortDirection/DESCENDING))))
 
 (defn find-read [user]
-  (ds/find-all (doto (Query. "Article") 
+  (ds/find-all (doto (Query. "Article")
       (.addFilter "user" Query$FilterOperator/EQUAL user)
       (.addFilter "unread" Query$FilterOperator/EQUAL false)
       (.addSort "created_at" Query$SortDirection/DESCENDING))))
 
 (defn find-starred [user]
-  (ds/find-all (doto (Query. "Article") 
+  (ds/find-all (doto (Query. "Article")
       (.addFilter "user" Query$FilterOperator/EQUAL user)
       (.addFilter "starred" Query$FilterOperator/EQUAL true)
       (.addSort "created_at" Query$SortDirection/DESCENDING))))
